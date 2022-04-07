@@ -37,6 +37,9 @@
       <bpmn:extensionElements>
         <zeebe:assignmentDefinition assignee="demo" />
         <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_3do3hmq" />
+        <zeebe:ioMapping>
+          <zeebe:input source="= source" target="InputVariable_19dq7pn" />
+        </zeebe:ioMapping>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0j1o3dj</bpmn:incoming>
       <bpmn:outgoing>Flow_0znm2yb</bpmn:outgoing>
