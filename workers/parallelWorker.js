@@ -1,36 +1,31 @@
 const ZB = require('zeebe-node')
-const PDFDocument = require('pdfkit');
-const fs = require('fs');
 const {Duration} = require("zeebe-node");
 
 //https://medium.com/@sitapati/node-js-client-for-zeebe-microservices-orchestration-engine-72287e4c7d94
 
-const zbc = new ZB.ZBClient()
+runParallelTasks();
 
-const zbWorker = zbc.createWorker('parallel-task', handler);
+function runParallelTasks() {
 
-function handler(job, _, zbWorker) {
+    const zbc = new ZB.ZBClient()
+    const zbWorker = zbc.createWorker('parallel-task', handler);
+
+    zbc.createWorker({taskType: 'post-parallel-task', taskHandler: parallelHandler});
+
+}
+
+
+async function handler(job, _, worker) {
     let waitTime = job.variables.time;
-     setTimeout(() => {
+    setTimeout(() => {
         console.log('Task finished after waiting for: ' + waitTime + ' seconds')
     }, waitTime * 1000);
-
-   // const updateToBrokerVariables = {
-    //    test: 'valueTest',
-  //  }
 
     return job.complete();
 }
 
 
-const zbWorkerPost = zbc.createWorker({
-    taskType: 'post-parallel-task',
-    taskHandler: parallelHandler
-});
-
-function parallelHandler(job, _, zbWorkerPost) {
-
-    console.log('Post parallel tasks task');
-    // console.log(job.variables);
+async function parallelHandler(job, _, worker) {
+    console.log('Post parallel tasks task')
     return job.complete();
 }

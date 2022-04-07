@@ -13,7 +13,7 @@ async function createZeebeClient(){
 
 async function deployBpmn(){
     const zeebeClient = await createZeebeClient();
-    const depl_response = await zeebeClient.deployProcess('./parallel.bpmn');
+    const depl_response = await zeebeClient.deployProcess('./parallel_join.bpmn');
     console.log(depl_response);
 
     let bpmnProcessId =  depl_response.processes[0].bpmnProcessId;
