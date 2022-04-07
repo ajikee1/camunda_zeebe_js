@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0flcthb" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.12.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="1.1.0">
+  <bpmn:process id="file_creation" name="Create file" isExecutable="true">
+    <bpmn:extensionElements>
+      <zeebe:userTaskForm id="userTaskForm_3do3hmq">{
+  "schemaVersion": 2,
+  "components": [
+    {
+      "values": [
+        {
+          "label": "TEXT",
+          "value": "TEXT"
+        },
+        {
+          "value": "PDF",
+          "label": "PDF"
+        }
+      ],
+      "label": "Select File Type",
+      "type": "select",
+      "id": "Field_05oj2e4",
+      "key": "field_1isvhmd",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "selectField"
+}</zeebe:userTaskForm>
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0j1o3dj</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0j1o3dj" sourceRef="StartEvent_1" targetRef="outputSelect" />
+    <bpmn:userTask id="outputSelect" name="Select Output File Type">
+      <bpmn:extensionElements>
+        <zeebe:assignmentDefinition assignee="demo" />
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_3do3hmq" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0j1o3dj</bpmn:incoming>
+      <bpmn:outgoing>Flow_0znm2yb</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0znm2yb" sourceRef="outputSelect" targetRef="Gateway_1o30e79" />
+    <bpmn:exclusiveGateway id="Gateway_1o30e79">
+      <bpmn:incoming>Flow_0znm2yb</bpmn:incoming>
+      <bpmn:outgoing>Flow_11q5gv1</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1adgr2n</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_11q5gv1" name="Output File Type = PDF" sourceRef="Gateway_1o30e79" targetRef="pdf-output">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">= field_1isvhmd = "PDF"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1adgr2n" name="Output File Type = TEXT" sourceRef="Gateway_1o30e79" targetRef="text-output">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">= field_1isvhmd = "TEXT"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="pdf-output" name="&#39;HelloTISTA&#39; PDF">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="pdf-output" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_11q5gv1</bpmn:incoming>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="text-output" name="&#39;HelloTISTA&#39; TEXT">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="text-output" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1adgr2n</bpmn:incoming>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="file_creation">
+      <bpmndi:BPMNEdge id="Flow_1adgr2n_di" bpmnElement="Flow_1adgr2n">
+        <di:waypoint x="520" y="222" />
+        <di:waypoint x="520" y="290" />
+        <di:waypoint x="730" y="290" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="564" y="260" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11q5gv1_di" bpmnElement="Flow_11q5gv1">
+        <di:waypoint x="520" y="172" />
+        <di:waypoint x="520" y="120" />
+        <di:waypoint x="730" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="559" y="91" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0znm2yb_di" bpmnElement="Flow_0znm2yb">
+        <di:waypoint x="440" y="197" />
+        <di:waypoint x="495" y="197" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0j1o3dj_di" bpmnElement="Flow_0j1o3dj">
+        <di:waypoint x="215" y="197" />
+        <di:waypoint x="340" y="197" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="179" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_11ag8qw_di" bpmnElement="outputSelect">
+        <dc:Bounds x="340" y="157" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1o30e79_di" bpmnElement="Gateway_1o30e79" isMarkerVisible="true">
+        <dc:Bounds x="495" y="172" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1cb8wod_di" bpmnElement="pdf-output">
+        <dc:Bounds x="730" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1fm4cbl_di" bpmnElement="text-output">
+        <dc:Bounds x="730" y="250" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
